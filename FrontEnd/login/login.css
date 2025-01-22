@@ -1,6 +1,12 @@
 body {
-  height: 1024px;
-  text-decoration: none;
+  max-height: 1024px;
+  max-width: 1440px;
+}
+
+main {
+  background-color: #ffffee;
+  padding-top: 10%;
+  padding-bottom: 25%;
 }
 
 .formulaire-login {
@@ -47,4 +53,5 @@ input[type="password"],
 
 .forget-password {
   text-align: center;
+  color: black;
 }
