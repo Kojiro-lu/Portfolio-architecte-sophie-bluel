@@ -215,13 +215,13 @@ li:hover {
   margin-bottom: 1em;
 }
 
-.menu-filtre-categories {
+.menu-filter-categories {
   display: flex;
   justify-content: center;
   gap: 1%;
 }
 
-.menu-filtre-categories button {
+.menu-filter-categories button {
   border-radius: 60px;
   border: 1px solid #1d6154;
   padding: 5px 20px 5px 20px;
@@ -232,7 +232,7 @@ li:hover {
   font-family: Syne;
 }
 
-.menu-filtre-categories button:active {
+.menu-filter-categories button:active {
   background-color: #1d6154;
   color: white;
 }

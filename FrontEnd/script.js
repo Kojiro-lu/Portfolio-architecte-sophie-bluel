@@ -1,19 +1,19 @@
 //Adresse de l'API pour les projets
-const urlApiProjets = "http://localhost:5678/api/works";
+const urlApiProjects = "http://localhost:5678/api/works";
 
 // Fonction pour récupérer les projets
-async function recuperationProjets() {
+async function recoveryProjects() {
   try {
-    const reponseProjets = await fetch(urlApiProjets); // Appel des projets avec la variable précédemment créée
-    console.log("appel url :", urlApiProjets);
+    const answerProjects = await fetch(urlApiProjects); // Appel des projets avec la variable précédemment créée
+    console.log("appel url :", urlApiProjects);
 
-    if (!reponseProjets.ok) {
-      throw new Error(`Erreur HTTP : ${reponseProjets.status}`); // Vérification si la réponse est ok ou non
+    if (!answerProjects.ok) {
+      throw new Error(`Erreur HTTP : ${answerProjects.status}`); // Vérification si la réponse est ok ou non
     }
 
-    const projets = await reponseProjets.json(); // Transformation de la réponse en JSON
-    console.log("Projets récupérés :", projets); // Affiche les projets pour voir si ok
-    return projets; // Renvoie de la variable pour une nouvelle utilisation
+    const projects = await answerProjects.json(); // Transformation de la réponse en JSON
+    console.log("Projets récupérés :", projects); // Affiche les projets pour voir si ok
+    return projects; // Renvoie de la variable pour une nouvelle utilisation
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des projets :",
@@ -22,7 +22,7 @@ async function recuperationProjets() {
   }
 }
 
-recuperationProjets(); // Appel à exécuter la fonction
+recoveryProjects(); // Appel à exécuter la fonction
 
 //Création des fonctions pour les cards, images, titles.
 function createProjectCard() {
@@ -43,16 +43,16 @@ function createProjectTitle(title) {
 }
 
 // Affichage des projets dans notre galerie
-function affichageProjets(projets) {
+function displayProjects(projects) {
   const gallery = document.querySelector(".gallery"); //on recupère la gallery dans le DOM
   gallery.innerHTML = ""; //remettre à 0 les elements présent au cas ou.
 
-  projets.forEach((projet) => {
-    console.log(projet);
+  projects.forEach((project) => {
+    console.log(project);
 
     const card = createProjectCard();
-    const img = createProjectImage(projet.imageUrl, projet.title);
-    const title = createProjectTitle(projet.title);
+    const img = createProjectImage(project.imageUrl, project.title);
+    const title = createProjectTitle(project.title);
 
     card.appendChild(img);
     card.appendChild(title);
@@ -60,27 +60,27 @@ function affichageProjets(projets) {
   });
 }
 // Appel de la fonction seulement après récupération des projets avec async pour être sur que le projet soit chargé avant secondes étapes
-async function demarrageAffichageProjets() {
-  const projets = await recuperationProjets(); // récup des projets
-  affichageProjets(projets); // Passer les projets récup à la fonction d'affichage
+async function startDisplayProjects() {
+  const projects = await recoveryProjects(); // récup des projets
+  displayProjects(projects); // Passer les projets récup à la fonction d'affichage
 }
-demarrageAffichageProjets();
+startDisplayProjects();
 
 // Fonction génèration des filtres du menu catégorie
 // Adresse de l'API pour les projets
 const urlApiCategories = "http://localhost:5678/api/categories";
 
 // Fonction pour récupérer les catégories
-async function recuperationCategories() {
+async function recoveryCategories() {
   try {
-    const reponseCategories = await fetch(urlApiCategories); // Appel des catégories avec la variable précèdement créée
+    const answerCategories = await fetch(urlApiCategories); // Appel des catégories avec la variable précèdement créée
     console.log("appel categories :", urlApiCategories);
 
-    if (!reponseCategories.ok) {
-      throw new Error(`Erreur HTTP : ${reponseCategories.status}`); // Vérifie si la réponse est OK
+    if (!answerCategories.ok) {
+      throw new Error(`Erreur HTTP : ${answerCategories.status}`); // Vérifie si la réponse est OK
     }
 
-    const categories = await reponseCategories.json(); // Transformation de la réponse en JSON
+    const categories = await answerCategories.json(); // Transformation de la réponse en JSON
     console.log("Catégories récupérées :", categories); // Affiche les catégories pour voir si tout est OK
     return categories; // Renvoie de la variable pour une nouvelle utilisation
   } catch (error) {
@@ -92,47 +92,72 @@ async function recuperationCategories() {
   }
 }
 
-recuperationCategories(); // Appel pour exécuter la fonction
+recoveryCategories(); // Appel pour exécuter la fonction
 
-//Fonction pour création du menu des filtres catégories
-function menuFiltreCategories(categories, projets) {
-  const menu = document.querySelector(".menu-filtre-categories"); // recuperation du menu dans le DOM
-  menu.innerHTML = ""; // on remet à 0 le menu au cas ou
+// Fonction pour créer un bouton de catégorie
+function createCategoryButton(categoryName) {
+  const buttonCategories = document.createElement("button");
+  buttonCategories.textContent = categoryName; // pour le nom de chaque catégorie
+  return buttonCategories;
+}
 
-  //Création du bouton pour tous les projets
-  const boutonTousProjets = document.createElement("button"); //Création du bouton
-  boutonTousProjets.textContent = "Tous"; //texte du bouton
+// Fonction pour ajouter un événement de filtrage aux boutons
+function addFilterEvent(buttonCategories, categoryId, projects) {
+  buttonCategories.addEventListener("click", () => {
+    const menuButtons = document.querySelectorAll(
+      ".menu-filter-categories button"
+    ); //on sélèctionne le selecteur button de notre classe manu-filter-catégories
+    menuButtons.forEach((button) => {
+      button.classList.remove("active");
+    }); //Enlever la classe active de tous les boutons
 
-  menu.appendChild(boutonTousProjets); //on ajoute le bouton au menu
+    buttonCategories.classList.add("active"); //Ajouter la classe active au bouton qui a été cliquer
 
-  //activation au clique du filtre, pour afficher tous les projets
-  boutonTousProjets.addEventListener("click", () => {
-    affichageProjets(projets);
+    const projectsFiltres = projects.filter(
+      (project) => project.categoryId === categoryId
+    );
+    displayProjects(projectsFiltres);
+  }); //Filtre des catégories
+}
+
+// Fonction pour la création du menu des filtres catégories
+function menuFilterCategories(categories, projects) {
+  const menu = document.querySelector(".menu-filter-categories"); // récupération du menu dans le DOM
+  menu.innerHTML = ""; // on remet à 0 le menu au cas où
+
+  // Création du bouton pour tous les projets
+  const buttonAllProjects = document.createElement("button"); // Création du bouton
+  buttonAllProjects.textContent = "Tous"; // texte du bouton
+
+  menu.appendChild(buttonAllProjects); // on ajoute le bouton au menu
+
+  // activation au clic du filtre, pour afficher tous les projets
+  buttonAllProjects.addEventListener("click", () => {
+    const menuButtons = document.querySelectorAll(
+      ".menu-filter-categories button"
+    ); //on sélèctionne le selecteur button de notre classe manu-filter-catégories
+    menuButtons.forEach((button) => {
+      button.classList.remove("active");
+    }); //Enlever la classe active de tous les boutons
+
+    buttonAllProjects.classList.add("active"); //Ajouter la classe active au bouton qui a été cliquer
+    displayProjects(projects);
   });
 
-  //Création des autres boutons
-  for (let i = 0; i < categories.length; i++) {
-    console.log("categories ok :", categories[i]);
+  // Création des autres boutons avec forEach
+  categories.forEach((category) => {
+    console.log("categorie ok :", category);
 
-    const boutonCategories = document.createElement("button");
-    boutonCategories.textContent = categories[i].name; // pour le nom de chàque catégories
-
-    menu.appendChild(boutonCategories); // Ajouter les boutons au menu
-
-    //activation au clique du filtre, pour afficher chàque menu suivent sur lequel on clique gràce au id des boutons et des catégories
-    boutonCategories.addEventListener("click", () => {
-      const projetsFiltres = projets.filter(
-        (projet) => projet.categoryId === categories[i].id
-      );
-      affichageProjets(projetsFiltres);
-    });
-  }
+    const buttonCategories = createCategoryButton(category.name); // création des boutons
+    menu.appendChild(buttonCategories); // Ajouter le bouton au menu
+    addFilterEvent(buttonCategories, category.id, projects); // ajout de l'événement au bouton
+  });
 }
 
 //Appel à la fonction quand tout est chargé correctement avec async
-async function demarrageAffichageMenuFiltre() {
-  const categories = await recuperationCategories(); // récup des catégories
-  const projets = await recuperationProjets(); // récupèration également des projets
-  menuFiltreCategories(categories, projets); // Passer les categories et les projets récup à la fonction d'affichage
+async function startDisplayMenuProjects() {
+  const categories = await recoveryCategories(); // récup des catégories
+  const projects = await recoveryProjects(); // récupèration également des projets
+  menuFilterCategories(categories, projects); // Passer les categories et les projets récup à la fonction d'affichage
 }
-demarrageAffichageMenuFiltre();
+startDisplayMenuProjects();
