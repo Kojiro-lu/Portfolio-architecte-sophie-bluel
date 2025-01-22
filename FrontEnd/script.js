@@ -67,18 +67,32 @@ async function demarrageAffichageProjets() {
 demarrageAffichageProjets();
 
 // Fonction génèration des filtres du menu catégorie
-//Adresse de l'API pour les projets
+// Adresse de l'API pour les projets
 const urlApiCategories = "http://localhost:5678/api/categories";
 
-//Fonction pour récupérer les catégories
+// Fonction pour récupérer les catégories
 async function recuperationCategories() {
-  const reponseCategories = await fetch(urlApiCategories); //Appel des categories avec la variable précèdement créer
-  console.log("appel categories :", urlApiCategories);
-  const categories = await reponseCategories.json(); // Transformation de la réponse en JSON
-  console.log("Categories récupérés :", categories); // Affiche les categories pour voir si ok
-  return categories; // Renvoie de la variable pour une nouvelle utilisation
+  try {
+    const reponseCategories = await fetch(urlApiCategories); // Appel des catégories avec la variable précèdement créée
+    console.log("appel categories :", urlApiCategories);
+
+    if (!reponseCategories.ok) {
+      throw new Error(`Erreur HTTP : ${reponseCategories.status}`); // Vérifie si la réponse est OK
+    }
+
+    const categories = await reponseCategories.json(); // Transformation de la réponse en JSON
+    console.log("Catégories récupérées :", categories); // Affiche les catégories pour voir si tout est OK
+    return categories; // Renvoie de la variable pour une nouvelle utilisation
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des catégories :",
+      error.message
+    ); // Gère et affiche les erreurs
+    return null; // Retourne null en cas d'erreur
+  }
 }
-recuperationCategories(); //appel à exécuter la fonction
+
+recuperationCategories(); // Appel pour exécuter la fonction
 
 //Fonction pour création du menu des filtres catégories
 function menuFiltreCategories(categories, projets) {
