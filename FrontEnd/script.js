@@ -1,6 +1,12 @@
 //Adresse de l'API pour les projets
 const urlApiProjects = "http://localhost:5678/api/works";
 
+//////////////////////////////////////////////////////////////
+//                                                         //
+//Récupèration et affichage des projets sur la page index //
+//                                                       //
+//////////////////////////////////////////////////////////
+
 // Fonction pour récupérer les projets
 async function recoveryProjects() {
   try {
@@ -66,7 +72,12 @@ async function startDisplayProjects() {
 }
 startDisplayProjects();
 
-// Fonction génèration des filtres du menu catégorie
+//////////////////////////////////////////////////////////
+//                                                     //
+// Fonction génèration des filtres du menu catégorie  //
+//                                                   //
+//////////////////////////////////////////////////////
+
 // Adresse de l'API pour les projets
 const urlApiCategories = "http://localhost:5678/api/categories";
 
@@ -161,3 +172,68 @@ async function startDisplayMenuProjects() {
   menuFilterCategories(categories, projects); // Passer les categories et les projets récup à la fonction d'affichage
 }
 startDisplayMenuProjects();
+
+////////////////////////////////////////////////////////////////////////
+//                                                                   //
+//Mise en place de la déconnexion une fois que nous sommes connecté //
+//                                                                 //
+////////////////////////////////////////////////////////////////////
+
+// On met à jour le bouton login/logout
+function checkLoginStatus() {
+  const token = localStorage.getItem("authToken"); // Récupérer le token dans localStorage
+  const loginLink = document.querySelector("nav ul li:nth-child(3) a"); // Cibler le lien "login" gràce à nth-child(3) qui correspond au troisiéme fils de li
+
+  console.log("Token présent ou non:", token); // Affiche le token ou null si non fonctionnel
+
+  if (token) {
+    // Si l'utilisateur est bien connecté
+    loginLink.textContent = "Logout"; // Changer le texte en "Logout" pour pouvoir ce déconnecté
+    loginLink.href = "#"; // Désactiver le lien de redirection au cas ou
+    loginLink.addEventListener("click", handleLogout); // Ajouter l'événement de déconnexion
+  } else {
+    // Si l'utilisateur n'est pas connecté
+    loginLink.textContent = "Login"; // laisser le login pour pouvoir ce connecté
+    loginLink.href = "./login/login.html"; // rediriger vers la page de connexion
+  }
+}
+
+// fonction pour la déconnexion
+function handleLogout(event) {
+  event.preventDefault(); // Empêcher le comportement par défaut du lien
+  localStorage.removeItem("authToken"); // Supprimer le token du localStorage pour pas de reco-automatique si on revient sur la page.
+  window.location.reload(); // charger de nouveau notre page pour revenir à non connecté
+}
+
+// Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Vérification de la connexion ok ou non.");
+  checkLoginStatus(); // Vérification du statut de la connexion
+});
+
+/////////////////////////////////////////////////////////
+//                                                    //
+// Affichage du bandeau lorsque nous sommes connecté //
+//                                                  //
+/////////////////////////////////////////////////////
+
+// on vérifie si l'utilisateur est connecté pour mettre à jour le bandeau
+function checkLoginStatusForDisplayBanner() {
+  const token = localStorage.getItem("authToken"); // Vérifier le token dans localStorage
+  const bandeau = document.querySelector(".bandeau-noir"); // Cibler le bandeau noir dans le DOM
+
+  if (bandeau && token) {
+    // Si l'utilisateur est bien connecté et que le bandeau noir est bien présent
+    bandeau.style.display = "flex"; // on afficher le bandeau noir
+    console.log("L'utilisateur est connecté : bandeau affiché.");
+  } else {
+    bandeau.style.display = "none"; // Masquer le bandeau noir
+    console.log("L'utilisateur n'est pas connecté : bandeau masqué.");
+  }
+}
+
+// Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Vérification de la connexion ok ou non.");
+  checkLoginStatusForDisplayBanner(); // Vérification du statut de connexion
+});
