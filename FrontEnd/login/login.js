@@ -22,3 +22,16 @@ async function sendLoginRequest(email, password) {
     throw error;
   }
 }
+
+// Fonction pour gérer la réponse de connexion
+function LoginResponse(data) {
+  const token = data.token;
+  localStorage.setItem("authToken", token);
+  window.location.href = "index.html"; // Redirection vers la page d'accueil
+}
+
+// Fonction pour afficher un message d'erreur
+function displayErrorMessage(message) {
+  const errorMessage = document.querySelector("#error-message");
+  errorMessage.textContent = message;
+}
