@@ -222,7 +222,7 @@ function checkLoginStatusForDisplayBanner() {
   const token = localStorage.getItem("authToken"); // Vérifier le token dans localStorage
   const bandeau = document.querySelector(".bandeau-noir"); // Cibler le bandeau noir dans le DOM
 
-  if (bandeau && token) {
+  if (token && bandeau) {
     // Si l'utilisateur est bien connecté et que le bandeau noir est bien présent
     bandeau.style.display = "flex"; // on afficher le bandeau noir
     console.log("L'utilisateur est connecté : bandeau affiché.");
@@ -236,4 +236,30 @@ function checkLoginStatusForDisplayBanner() {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Vérification de la connexion ok ou non.");
   checkLoginStatusForDisplayBanner(); // Vérification du statut de connexion
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                    //
+// Suppresion des filtres et ajouter du boutton modifier pour ouverture de la Modale //
+//                                                                                  //
+/////////////////////////////////////////////////////////////////////////////////////
+
+function checkLoginStatusForDeletedFilter() {
+  const token = localStorage.getItem("authToken"); // Vérifier le token dans localStorage bien présent
+  const menuFilter = document.querySelector(".menu-filter-categories");
+  const buttonModifyProjets = document.querySelector(".modifier-projet");
+
+  if (token) {
+    menuFilter.style.display = "none";
+    buttonModifyProjets.style.display = "flex";
+  } else {
+    menuFilter.style.display = "flex";
+    buttonModifyProjets.style.display = "none";
+  }
+}
+
+// Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Vérification de la connexion ok ou non.");
+  checkLoginStatusForDeletedFilter(); // Vérification du statut de connexion
 });

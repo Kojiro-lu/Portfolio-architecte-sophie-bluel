@@ -258,6 +258,27 @@ li:hover {
   color: white;
 }
 
+.mes-projets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+}
+.modifier-projet {
+  justify-content: center;
+  height: 30px;
+  gap: 1%;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 1em;
+  gap: 15%;
+}
+
+.icone-stylo {
+  height: 15px;
+  width: 15px;
+}
+
 .gallery {
   width: 100%;
   display: grid;
