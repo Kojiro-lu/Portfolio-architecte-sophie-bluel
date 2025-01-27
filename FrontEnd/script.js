@@ -245,21 +245,23 @@ document.addEventListener("DOMContentLoaded", () => {
 /////////////////////////////////////////////////////////////////////////////////////
 
 function checkLoginStatusForDeletedFilter() {
-  const token = localStorage.getItem("authToken"); // Vérifier le token dans localStorage bien présent
-  const menuFilter = document.querySelector(".menu-filter-categories");
-  const buttonModifyProjets = document.querySelector(".modifier-projet");
+  const token = localStorage.getItem("authToken"); // Vérifier que le token dans localStorage bien présent.
+  const menuFilter = document.querySelector(".menu-filter-categories"); // on sélèctionne la bonne classe qui concerne les filtres pour pouvoir l'utilisé
+  const buttonModifyProjets = document.querySelector(".modifier-projet"); // on sélèctionne la classe et on stock dans la variable pour l'utilisé
 
   if (token) {
-    menuFilter.style.display = "none";
-    buttonModifyProjets.style.display = "flex";
+    //si le tocken existe
+    menuFilter.style.display = "none"; // on cache les filtres
+    buttonModifyProjets.style.display = "flex"; // on affiche le menu modifier
   } else {
-    menuFilter.style.display = "flex";
-    buttonModifyProjets.style.display = "none";
+    //sinon
+    menuFilter.style.display = "flex"; // les filres sont affichés
+    buttonModifyProjets.style.display = "none"; // le menu modifier reste cacher
   }
 }
 
 // Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Vérification de la connexion ok ou non.");
-  checkLoginStatusForDeletedFilter(); // Vérification du statut de connexion
+  console.log("Vérification de la connexion ok ou non."); // Vérification du statut de connexion
+  checkLoginStatusForDeletedFilter(); // execution de la fonction
 });
