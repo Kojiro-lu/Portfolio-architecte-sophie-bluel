@@ -46,7 +46,7 @@ function createProjectImage(imageUrl, title, card) {
 function createProjectTitle(title, card) {
   const figcaption = document.createElement("figcaption");
   figcaption.textContent = title; //titre du projet
-  card.appendChild(title);
+  card.appendChild(figcaption);
 }
 
 // Affichage des projets dans notre galerie
@@ -247,15 +247,17 @@ function checkLoginStatusForDeletedFilter() {
   const token = localStorage.getItem("authToken"); // Vérifier que le token dans localStorage bien présent.
   const menuFilter = document.querySelector(".menu-filter-categories"); // on sélèctionne la bonne classe qui concerne les filtres pour pouvoir l'utilisé
   const buttonModifyProjets = document.querySelector(".modifier-projet"); // on sélèctionne la classe et on stock dans la variable pour l'utilisé
-
+  const myProjects = document.querySelector(".mes-projets");
   if (token) {
     //si le tocken existe
     menuFilter.style.display = "none"; // on cache les filtres
     buttonModifyProjets.style.display = "flex"; // on affiche le menu modifier
+    myProjects.style.flexDirection = "row";
   } else {
     //sinon
     menuFilter.style.display = "flex"; // les filres sont affichés
     buttonModifyProjets.style.display = "none"; // le menu modifier reste cacher
+    myProjects.style.flexDirection = "columnn";
   }
 }
 
