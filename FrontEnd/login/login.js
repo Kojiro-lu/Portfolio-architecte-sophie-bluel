@@ -1,65 +1,69 @@
 //Adresse de l'API pour la connexion
 const urlApiLogin = "http://localhost:5678/api/users/login";
 
-// Fonction pour envoyer la requête de connexion
-async function sendLoginRequest(email, password) {
+// Fonction pour envoyer la requête de connexion à l'API
+async function apiLoginRequest(email, password) {
   const loginData = { email, password };
 
   try {
     const response = await fetch(urlApiLogin, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginData),
+      method: "POST", //type de requête post pour l'envoie des données à l'api
+      headers: { "Content-Type": "application/json" }, //requête en json
+      body: JSON.stringify(loginData), //convertir loginData en json pour l'envoie de la requête
     });
+    console.log("Statut de la réponse : ", response.status); // Ajout d'un console log pour le statut de la réponse
 
-    console.log("Statut de la réponse : ", response.status); // Ajout
-    const responseBody = await response.json();
-    console.log("Réponse complète de l'API :", responseBody); // Ajout
+    const responseBody = await response.json(); //stocké la réponse dans la constante
+    console.log("Réponse complète de l'API :", responseBody); // on affiche la répnose de l'api pour voir si ok ou pas
 
     if (!response.ok) {
-      throw new Error(
+      //vérification de la réponse et si erreur alors
+      throw new Error( //gràce à throw on créer l'erreur dans réponse status
         `HTTP Error: ${response.status} - ${
-          responseBody.message || "Erreur inconnue"
+          responseBody.message || "Erreur inconnue" //message d'erreur ou erreur iconnue
         }`
       );
     }
 
-    return responseBody;
+    return responseBody; // si la réponse et ok, pas besoin de lancer le if
   } catch (error) {
+    //mis en place du catch pour gérer les autres erreurs non gérer dans le if
     console.error("Erreur durant la connexion :", error.message);
-    throw error;
+    throw error; // on informe notre code de la récupératoin de l'erreur
   }
 }
 
-// Fonction pour gérer la réponse de connexion
+// Fonction pour gérer la réponse ok aprés tentative de connexion
 function handleLoginResponse(data) {
-  const token = data.token;
-  localStorage.setItem("authToken", token);
+  const token = data.token; // on récupère le token transmis
+  localStorage.setItem("authToken", token); //on stock le tocken dans le localStorage de l'ordinateur
   window.location.href = "../index.html"; // Redirection vers la page d'accueil
 }
 
-// Fonction pour afficher un message d'erreur
+// Fonction pour afficher un message d'erreur si tentative de connexion ko
 function displayErrorMessage(message) {
-  const errorMessage = document.querySelector("#message-erreur-connexion");
-  errorMessage.textContent = message;
+  const errorMessage = document.querySelector("#message-erreur-connexion"); //recerche de l'élèment dans le html pour l'affichage du message d'erreur
+  errorMessage.textContent = message; //on affiche notre message d'erreur récupérer
 }
 
-// Fonction pour appel à la connexion
+// Fonction pour gérer la soumission du formulaire de connexion
 async function handleLogin(event) {
-  event.preventDefault();
+  event.preventDefault(); //on enpêche le rechargement par dêfaut de la page
 
-  const email = document.querySelector("#mail").value.trim();
-  const password = document.querySelector("#password").value.trim();
+  const email = document.querySelector("#mail").value.trim(); //on récupère ce qu'on a écris dans la case email
+  const password = document.querySelector("#password").value.trim(); //on récupère ce qu'on a écris dans la case password
 
   if (!email || !password) {
-    displayErrorMessage("Merci de remplir les 2 champs");
+    displayErrorMessage("Merci de remplir les 2 champs"); //message d'erreur si un des 2 champs n'est pas remplie
     return;
   }
 
+  //utilisation de try/catch pour l'affichage d'une erreur si mots de passe ou mail invalide
   try {
-    const data = await sendLoginRequest(email, password);
-    handleLoginResponse(data);
+    const data = await apiLoginRequest(email, password);
+    handleLoginResponse(data); //si ok pas de probléme
   } catch (error) {
+    //si ko on affiche le message d'erreur
     displayErrorMessage(
       "Email ou mot de passe invalide, merci de saisir de nouveau vos informations de connexion."
     );
@@ -68,12 +72,13 @@ async function handleLogin(event) {
 
 // Ajouter l'événement au formulaire
 document.addEventListener("DOMContentLoaded", () => {
+  //chargement complet de la structure avant l'execution du code pour vérification
   const form = document.querySelector(".formulaire-login");
-
+  //on vérifie d'abord que le formulaire existe bien
   if (!form) {
     console.error("Le formulaire n'a pas été trouvé dans le DOM.");
     return;
   }
 
-  form.addEventListener("submit", handleLogin);
+  form.addEventListener("submit", handleLogin); //écouteur pour le submint du formulaire qui appel la fonction handlelogin
 });

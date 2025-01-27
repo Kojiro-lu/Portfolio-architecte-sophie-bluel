@@ -21,10 +21,11 @@ async function recoveryProjects() {
     console.log("Projets récupérés :", projects); // Affiche les projets pour voir si ok
     return projects; // Renvoie de la variable pour une nouvelle utilisation
   } catch (error) {
+    //on capture gràce au catch si un erreur ce produit
     console.error(
       "Erreur lors de la récupération des projets :",
       error.message
-    ); // Affichage des erreurs dans la console
+    ); //affichage des erreurs s'il y en a dans la console
   }
 }
 
@@ -35,17 +36,17 @@ function createProjectCard() {
   return document.createElement("figure");
 }
 
-function createProjectImage(imageUrl, title) {
+function createProjectImage(imageUrl, title, card) {
   const img = document.createElement("img");
   img.src = imageUrl; //url de l'image
   img.alt = title; //titre du projet qui sert au titre de l'image
-  return img;
+  card.appendChild(img);
 }
 
-function createProjectTitle(title) {
+function createProjectTitle(title, card) {
   const figcaption = document.createElement("figcaption");
   figcaption.textContent = title; //titre du projet
-  return figcaption;
+  card.appendChild(title);
 }
 
 // Affichage des projets dans notre galerie
@@ -53,15 +54,13 @@ function displayProjects(projects) {
   const gallery = document.querySelector(".gallery"); //on recupère la gallery dans le DOM
   gallery.innerHTML = ""; //remettre à 0 les elements présent au cas ou.
 
+  //on lance une boucle forEach pour parcourir le tableau projects
   projects.forEach((project) => {
-    console.log(project);
-
     const card = createProjectCard();
-    const img = createProjectImage(project.imageUrl, project.title);
-    const title = createProjectTitle(project.title);
+    createProjectImage(project.imageUrl, project.title, card);
+    createProjectTitle(project.title, card);
 
-    card.appendChild(img);
-    card.appendChild(title);
+    // on raccroche chàque enfants à leurs parents pour l'affichage au bon endroit
     gallery.appendChild(card);
   });
 }
@@ -263,5 +262,5 @@ function checkLoginStatusForDeletedFilter() {
 // Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Vérification de la connexion ok ou non."); // Vérification du statut de connexion
-  checkLoginStatusForDeletedFilter(); // execution de la fonction
+  checkLoginStatusForDeletedFilter();
 });
