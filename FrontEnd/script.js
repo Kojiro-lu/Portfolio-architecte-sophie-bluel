@@ -220,13 +220,16 @@ document.addEventListener("DOMContentLoaded", () => {
 function checkLoginStatusForDisplayBanner() {
   const token = localStorage.getItem("authToken"); // Vérifier le token dans localStorage
   const bandeau = document.querySelector(".bandeau-noir"); // Cibler le bandeau noir dans le DOM
+  const bodyConnected = document.body; // Sélèction du body pour l'ajout d'un margin top dynamiquement
 
   if (token && bandeau) {
     // Si l'utilisateur est bien connecté et que le bandeau noir est bien présent
     bandeau.style.display = "flex"; // on afficher le bandeau noir
+    bodyConnected.style.marginTop = "69px"; // Ajouter un margin-top pour décaler le contenu
     console.log("L'utilisateur est connecté : bandeau affiché.");
   } else {
-    bandeau.style.display = "none"; // Masquer le bandeau noir
+    bandeau.style.display = "none"; // Masquer le bandeau noir si utilisateur non connecter
+    bodyConnected.style.marginTop = "0"; // Remettre la marge à zéro
     console.log("L'utilisateur n'est pas connecté : bandeau masqué.");
   }
 }

@@ -137,6 +137,10 @@ body {
 }
 
 .bandeau-noir {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
   display: none;
   justify-content: center;
   align-items: center;
