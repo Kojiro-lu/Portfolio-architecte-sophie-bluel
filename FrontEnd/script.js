@@ -257,7 +257,7 @@ function checkLoginStatusForDeletedFilter() {
     //sinon
     menuFilter.style.display = "flex"; // les filres sont affichés
     buttonModifyProjets.style.display = "none"; // le menu modifier reste cacher
-    myProjects.style.flexDirection = "columnn";
+    myProjects.style.flexDirection = "column";
   }
 }
 

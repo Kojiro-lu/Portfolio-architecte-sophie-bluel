@@ -239,6 +239,7 @@ li:hover {
 .menu-filter-categories {
   display: flex;
   justify-content: center;
+  width: 600px;
   gap: 1%;
 }
 
