@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./assets/style.css" />
     <link rel="stylesheet" href="./modale/modale.css" />
     <script type="module" src="./script.js" defer></script>
+    <script type="module" src="./modale/modale.js" defer></script>
   </head>
   <body>
     <div class="bandeau-noir">
@@ -97,8 +98,10 @@
       </nav>
     </footer>
 
-    <aside id="modal1" class="modal-overlay">
-      <div class="modal-background"></div>
+    <aside id="modal1" class="modal-overlay" aria-hidden="true" role="dialog">
+      <div class="modal-background">
+        <div class="modal-content"></div>
+      </div>
     </aside>
   </body>
 </html>
