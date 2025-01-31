@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                    //
-// Suppresion des filtres et ajouter du boutton modifier pour ouverture de la Modale //
+// Suppression des filtres et ajouter du boutton modifier pour ouverture de la Modale //
 //                                                                                  //
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -268,4 +268,29 @@ function checkLoginStatusForDeletedFilter() {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Vérification de la connexion ok ou non."); // Vérification du statut de connexion
   checkLoginStatusForDeletedFilter();
+});
+
+////////////////////////////////////////////
+//                                       //
+// Ouverture de l'overlay et la modal   //
+//                                     //
+////////////////////////////////////////
+
+function openModal() {
+  const modifyButton = document.querySelector(".modifier-projet");
+  const overlay = document.getElementById("overlay");
+  const modal = document.getElementById("modal");
+
+  if (modifyButton && overlay && modal) {
+    modifyButton.addEventListener("click", () => {
+      overlay.style.display = "block";
+      modal.style.display = "block";
+    });
+  }
+}
+
+// Exécuter au chargement de la page
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Initialisation de l'ouverture de la modal.");
+  openModal();
 });

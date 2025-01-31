@@ -97,22 +97,22 @@
         </ul>
       </nav>
     </footer>
-    <div id="overlay" class="modal-overlay"></div>
-    <aside id="modal1" class="block-modal" aria-hidden="true" role="dialog">
-      <p>
-        Lorem ipsum dolor sit amet. Qui dicta dolorumUt cumque est voluptatum
-        beatae et voluptas quae sit recusandae accusantium. Ut velit
-        necessitatibus et quibusdam suscipit
-        <strong
-          >Est quidem sed repellat voluptatem qui amet velit non asperiores
-          quisquam</strong
-        >
-        quo perferendis laudantium? Vel incidunt facere
-        <em>Sit temporibus eum quos deleniti aut molestiae amet</em> eos
-        perspiciatis aperiam?
-      </p>
+    <div id="overlay" class="overlay"></div>
 
-      <button class="modal-close">Close</button>
+    <aside id="modal" class="modal" aria-hidden="true" role="dialog">
+      <div class="block-modal">
+        <button class="modal-close">
+          <img
+            src="./assets/icons/icone-croix.png"
+            alt="icone de fermeture"
+            class="icone-croix"
+          />
+        </button>
+        <h3 class="title-modal">Galerie photo</h3>
+        <div class="gallery-modal"></div>
+        <hr />
+        <button class="add-photo">Ajouter une photo</button>
+      </div>
     </aside>
   </body>
 </html>

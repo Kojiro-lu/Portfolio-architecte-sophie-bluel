@@ -1,33 +1,27 @@
-let modal = null;
+/////////////////////////////////////////////////////
+//                                                //
+// Fermeture au clique de la modal et overlay    //
+//                                              //
+/////////////////////////////////////////////////
 
-const openModal = async function (e) {
-  e.preventDefault();
+function closeModal() {
+  const overlay = document.getElementById("overlay"); // Sélection de l'overlay
+  const modal = document.getElementById("modal"); // Sélection de la modal
+  const closeButton = document.querySelector(".modal-close"); // Sélection du bouton de fermeture
 
-  modal = document.querySelector(e.target.getAttribute("href"));
-  modal.style.display = "flex"; // Ou 'block' si tu préfères
-  modal.removeAttribute("aria-hidden");
-  modal.setAttribute("aria-modal", "true");
+  if (overlay && closeButton && modal) {
+    // Si l'overlay ou la croix est cliqué, on ferme la modal
+    [overlay, closeButton].forEach((element) => {
+      element.addEventListener("click", () => {
+        overlay.style.display = "none"; // Cache l'overlay
+        modal.style.display = "none"; // Cache la modal
+      });
+    });
+  }
+}
 
-  // Empêcher la fermeture si on clique sur le contenu de la modal
-  modal
-    .querySelector(".block-modal")
-    .addEventListener("click", (e) => e.stopPropagation());
-
-  modal.addEventListener("click", closeModal);
-  modal.querySelector(".modal-close").addEventListener("click", closeModal);
-};
-
-const closeModal = function (e) {
-  if (modal === null) return;
-  e.preventDefault();
-  modal.style.display = "none";
-  modal.setAttribute("aria-hidden", "true");
-  modal.removeAttribute("aria-modal");
-  modal.removeEventListener("click", closeModal);
-  modal.querySelector(".modal-close").removeEventListener("click", closeModal);
-  modal = null;
-};
-
-document.querySelectorAll(".btn-modifier").forEach((btn) => {
-  btn.addEventListener("click", openModal);
+// Exécuter au chargement de la page
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Initialisation de la fermeture de la modal.");
+  closeModal();
 });
