@@ -272,25 +272,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ////////////////////////////////////////////
 //                                       //
-// Ouverture de l'overlay et la modal   //
+// Ouverture de l'overlay et la modal 1 //
 //                                     //
 ////////////////////////////////////////
 
 function openModal() {
   const modifyButton = document.querySelector(".modifier-projet");
   const overlay = document.getElementById("overlay");
-  const modal = document.getElementById("modal");
+  const modal1 = document.getElementById("modal1");
 
-  if (modifyButton && overlay && modal) {
+  if (modifyButton && overlay && modal1) {
     modifyButton.addEventListener("click", () => {
       overlay.style.display = "block";
-      modal.style.display = "block";
+      modal1.style.display = "block";
     });
   }
 }
 
-// Exécuter au chargement de la page
+// Exécuter au chargement complet du DOM
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Initialisation de l'ouverture de la modal.");
   openModal();
 });

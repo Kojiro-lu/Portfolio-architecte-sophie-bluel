@@ -97,9 +97,10 @@
         </ul>
       </nav>
     </footer>
+    <!--Overlay-->
     <div id="overlay" class="overlay"></div>
-
-    <aside id="modal" class="modal" aria-hidden="true" role="dialog">
+    <!--Premiére modale-->
+    <aside id="modal1" class="modal1" aria-hidden="true" role="dialog">
       <div class="block-modal">
         <div class="modal-header-close">
           <button class="modal-close">
@@ -115,6 +116,61 @@
         <hr />
         <div class="add-photo-block">
           <button class="add-photo">Ajouter une photo</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Seconde Modale-->
+    <aside id="modal2" class="modal2" aria-hidden="true" role="dialog">
+      <div class="block-modal2">
+        <div class="modal-closeorreturn">
+          <button class="modal-arrow-left">
+            <img
+              src="./assets/icons/arrow-left.png"
+              alt="icone fléche"
+              class="icon-arrow"
+            />
+          </button>
+          <button class="modal-close">
+            <img
+              src="./assets/icons/icone-croix.png"
+              alt="icone de fermeture"
+              class="icone-croix"
+            />
+          </button>
+        </div>
+
+        <h3 class="title-modal">Ajout Photo</h3>
+        <div class="up-project">
+          <div class="add-project-photo">
+            <label for="fichier" class="file-photo">
+              <img
+                src="./assets/icons/picture-svgrepo-com.png"
+                alt="image repo"
+                class="picture-repo"
+              />
+              <p class="up-photo">+ Ajouter photo</p>
+            </label>
+            <input
+              type="file"
+              id="file"
+              accept="image/png, image/jpg"
+              required
+            />
+            <p class="types-images">jpg, png : 4mo max</p>
+          </div>
+          <div class="add-project-title">
+            <div class="title">Titre</div>
+            <input class="input-title" id="input-title" type="text" required />
+          </div>
+          <div class="add-project-category">
+            <div class="category">Catégorie</div>
+            <input type="select" class="input-category" />
+          </div>
+        </div>
+        <hr />
+        <div class="add-project-block">
+          <button class="validate-add-project">Valider</button>
         </div>
       </div>
     </aside>
