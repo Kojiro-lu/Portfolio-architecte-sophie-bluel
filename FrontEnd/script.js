@@ -1,5 +1,5 @@
-//Adresse de l'API pour les projets
-const urlApiProjects = "http://localhost:5678/api/works";
+//Adresse de l'API pour les projets mis en export pour réutilisation dans moadle.js
+export const urlApiProjects = "http://localhost:5678/api/works";
 
 //////////////////////////////////////////////////////////////
 //                                                         //
@@ -8,7 +8,7 @@ const urlApiProjects = "http://localhost:5678/api/works";
 //////////////////////////////////////////////////////////
 
 // Fonction pour récupérer les projets
-async function recoveryProjects() {
+export async function recoveryProjects() {
   try {
     const answerProjects = await fetch(urlApiProjects); // Appel des projets avec la variable précédemment créée
     console.log("appel url :", urlApiProjects);
