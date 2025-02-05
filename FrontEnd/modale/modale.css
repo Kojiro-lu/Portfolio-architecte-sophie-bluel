@@ -223,7 +223,7 @@
 }
 
 .input-title {
-  width: 100%;
+  width: auto;
   height: 51px;
   box-shadow: 0px 4px 14px 0px #00000017;
 }
@@ -239,10 +239,11 @@
   color: #3d3d3d;
 }
 
-.input-category {
-  width: 100%;
+.select-category {
+  width: auto;
   height: 51px;
   box-shadow: 0px 4px 14px 0px #00000017;
+  background-color: #ffffff;
 }
 
 .add-project-block {

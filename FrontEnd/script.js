@@ -81,7 +81,7 @@ startDisplayProjects();
 const urlApiCategories = "http://localhost:5678/api/categories";
 
 // Fonction pour récupérer les catégories
-async function recoveryCategories() {
+export async function recoveryCategories() {
   try {
     const answerCategories = await fetch(urlApiCategories); // Appel des catégories avec la variable précèdement créée
     console.log("appel categories :", urlApiCategories);

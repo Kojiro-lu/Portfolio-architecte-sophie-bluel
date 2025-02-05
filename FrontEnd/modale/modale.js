@@ -1,5 +1,9 @@
 // Import des variables et fonctions depuis script.js
-import { urlApiProjects, recoveryProjects } from "../script.js";
+import {
+  urlApiProjects,
+  recoveryProjects,
+  recoveryCategories,
+} from "../script.js";
 
 /////////////////////////////////////////////////////
 //                                                //
@@ -35,10 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 //                                                                //
 ///////////////////////////////////////////////////////////////////
 
-// Fonction pour créer une carte "projet" dans la modale (sans le titre)
+// Fonction pour créer une carte "projet" dans la modale
 function createProjectCardModal(project) {
   const card = document.createElement("figure");
-  card.setAttribute("data-id", project.id); // Ajout d'un data-id dans figure pour l'utiliser dans la suppression par la suite
+  card.setAttribute("data-id", project.id); // Ajout d'un data-id a figure pour l'utiliser dans la suppression par la suite
   card.classList.add("project"); // Ajout de la classe "project" pour bien cibler l'élément
 
   const img = document.createElement("img");
@@ -53,6 +57,13 @@ function createProjectCardModal(project) {
 }
 
 // Fonction pour afficher les projets sans le titre dans la modale
+async function startDisplayProjectsModal() {
+  const projects = await recoveryProjects();
+  if (projects) {
+    displayProjectsModal(projects);
+  }
+}
+
 function displayProjectsModal(projects) {
   const modalGallery = document.querySelector(".gallery-modal");
   modalGallery.innerHTML = "";
@@ -62,14 +73,6 @@ function displayProjectsModal(projects) {
     modalGallery.appendChild(card);
   });
 }
-
-async function startDisplayProjectsModal() {
-  const projects = await recoveryProjects();
-  if (projects) {
-    displayProjectsModal(projects);
-  }
-}
-
 startDisplayProjectsModal();
 
 // Fonction pour ajouter l'icône de la poubelle aux projets
@@ -97,6 +100,7 @@ function addDeleteIconToProject(projectElement) {
 function deleteProject(projectId) {
   const authToken = localStorage.getItem("authToken");
 
+  //requête DELETE à l'api
   fetch(`http://localhost:5678/api/works/${projectId}`, {
     method: "DELETE",
     headers: {
@@ -197,3 +201,26 @@ function returnToFirstModal() {
 }
 
 document.addEventListener("DOMContentLoaded", returnToFirstModal);
+
+///////////////////////////////////////////////////////////////////////
+//                                                                  //
+// Affichage des catégories dans l'ajout de projet de la modale 2  //
+//                                                                //
+///////////////////////////////////////////////////////////////////
+
+async function dropdownCategoryListe() {
+  const selectElement = document.querySelector(".select-category"); // Sélectionne de l'élèment
+  if (!selectElement) return; // on vérifie si l'élèment existe bien
+
+  const categories = await recoveryCategories(); // Récupère les catégories depuis l'API
+  if (!categories) return; // Si erreur, stoppe l'exécution
+
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id; // on utilise l'id
+    option.textContent = category.name; // Utilise le nom pour le visuel
+    selectElement.appendChild(option);
+  });
+}
+
+dropdownCategoryListe();
