@@ -153,3 +153,47 @@ function openSecondModal() {
 document.addEventListener("DOMContentLoaded", () => {
   openSecondModal();
 });
+
+//////////////////////////////////////////////
+//                                         //
+// Fermeture de la modal 2 + overlay      //
+//                                       //
+//////////////////////////////////////////
+
+function closeSecondModal() {
+  const modal2 = document.getElementById("modal2");
+  const overlay = document.getElementById("overlay");
+  const closeButtons = modal2.querySelectorAll(".modal-close");
+
+  function closeModal() {
+    modal2.style.display = "none";
+    overlay.style.display = "none";
+  }
+
+  closeButtons.forEach((button) =>
+    button.addEventListener("click", closeModal)
+  );
+  overlay.addEventListener("click", closeModal);
+}
+
+document.addEventListener("DOMContentLoaded", closeSecondModal);
+
+/////////////////////////////////////////////
+//                                        //
+// Retour à la modal 1 avec la félche    //
+//                                      //
+/////////////////////////////////////////
+function returnToFirstModal() {
+  const modal2 = document.getElementById("modal2");
+  const modal1 = document.getElementById("modal1");
+  const backButton = modal2.querySelector(".modal-arrow-left");
+
+  function goBack() {
+    modal2.style.display = "none";
+    modal1.style.display = "block";
+  }
+
+  backButton.addEventListener("click", goBack);
+}
+
+document.addEventListener("DOMContentLoaded", returnToFirstModal);
