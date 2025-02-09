@@ -3,7 +3,7 @@ export const urlApiProjects = "http://localhost:5678/api/works";
 
 //////////////////////////////////////////////////////////////
 //                                                         //
-//Récupèration et affichage des projets sur la page index //
+//Récupération et affichage des projets sur la page index //
 //                                                       //
 //////////////////////////////////////////////////////////
 
@@ -70,6 +70,12 @@ async function startDisplayProjects() {
   displayProjects(projects); // Passer les projets récup à la fonction d'affichage
 }
 startDisplayProjects();
+
+// Mise à jour de l'affichage lors de l'ajout d'un nouveau projet
+export async function refreshGallery() {
+  const projects = await recoveryProjects();
+  displayProjects(projects);
+}
 
 //////////////////////////////////////////////////////////
 //                                                     //

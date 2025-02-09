@@ -154,6 +154,7 @@
             <input
               type="file"
               id="file"
+              name="image"
               accept="image/png, image/jpg"
               required
             />
@@ -161,18 +162,35 @@
           </div>
           <div class="add-project-title">
             <div class="title">Titre</div>
-            <input class="input-title" id="input-title" type="text" required />
+            <input
+              class="input-title"
+              id="input-title"
+              name="title"
+              type="text"
+              required
+            />
           </div>
           <div class="add-project-category">
             <div class="category">Catégorie</div>
-            <select class="select-category" name="cagtegory" required>
+            <select
+              class="select-category"
+              id="cagtegory"
+              name="category"
+              required
+            >
               <option value="">Sélectionnez une catégorie</option>
             </select>
           </div>
         </div>
         <hr />
+        <p
+          class="success-message"
+          style="display: none; color: green; font-weight: bold"
+        >
+          Projet ajouté avec succès !
+        </p>
         <div class="add-project-block">
-          <button class="validate-add-project">Valider</button>
+          <button class="validate-add-project" type="button">Valider</button>
         </div>
       </div>
     </aside>

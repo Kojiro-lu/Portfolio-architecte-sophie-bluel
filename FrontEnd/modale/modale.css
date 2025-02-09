@@ -246,8 +246,17 @@
   background-color: #ffffff;
 }
 
+.block-modal2 hr {
+  width: 100%;
+}
+
+.success-message {
+  text-align: center;
+}
+
 .add-project-block {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 10px;

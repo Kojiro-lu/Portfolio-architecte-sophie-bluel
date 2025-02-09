@@ -3,6 +3,7 @@ import {
   urlApiProjects,
   recoveryProjects,
   recoveryCategories,
+  refreshGallery,
 } from "../script.js";
 
 /////////////////////////////////////////////////////
@@ -56,7 +57,7 @@ function createProjectCardModal(project) {
   return card;
 }
 
-// Fonction pour afficher les projets sans le titre dans la modale
+// Fonction pour afficher les projets dans la modal
 async function startDisplayProjectsModal() {
   const projects = await recoveryProjects();
   if (projects) {
@@ -224,3 +225,93 @@ async function dropdownCategoryListe() {
 }
 
 dropdownCategoryListe();
+
+////////////////////////////////////
+//                               //
+// Ajout d'un nouveau projet    //
+//                             //
+////////////////////////////////
+
+// Chargement de l'image
+const fileInput = document.getElementById("file");
+const pictureRepo = document.querySelector(".picture-repo");
+
+// Écouter l'événement 'change' sur l'input type="file"
+fileInput.addEventListener("change", function (event) {
+  const file = event.target.files[0]; // Récupérer le fichier sélectionné
+  if (file) {
+    // Créer un objet URL pour afficher l'image
+    const imageUrl = URL.createObjectURL(file);
+
+    // Changer la source de l'image pour la photo sélectionnée
+    pictureRepo.src = imageUrl;
+  }
+});
+
+// Ajout du projet à l'api
+document
+  .querySelector(".validate-add-project")
+  .addEventListener("click", async () => {
+    const fileInput = document.querySelector("#file");
+    const titleInput = document.querySelector("#input-title");
+    const categorySelect = document.querySelector(".select-category");
+
+    // Vérification si tous les champs sont remplis
+    if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
+      alert("Veuillez remplir tous les champs !");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("title", titleInput.value);
+    formData.append("image", fileInput.files[0]); // Vérifie si "image" est bien le bon champ
+    formData.append("category", categorySelect.value.toString()); // Conversion en string
+
+    console.log("Données envoyées :", {
+      title: titleInput.value,
+      image: fileInput.files[0],
+      category: categorySelect.value.toString(),
+    });
+
+    try {
+      const response = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: formData, // Envoi en multipart/form-data
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Récupérer le message exact de l'API
+        throw new Error(`Erreur API: ${response.status} - ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Projet ajouté avec succès :", result);
+
+      // Affichage du message de confirmation
+      const successMessage = document.querySelector(".success-message");
+      successMessage.textContent = "Projet ajouté avec succès !";
+      successMessage.style.display = "block";
+
+      // Cacher le message après 3 secondes
+      setTimeout(() => {
+        successMessage.style.display = "none";
+      }, 3000);
+
+      // Rafraîchir la galerie de l'index et de la modale 1 sans recharger la page
+      refreshGallery();
+      startDisplayProjectsModal();
+
+      // Réinitialiser le formulaire
+      fileInput.value = "";
+      titleInput.value = "";
+      categorySelect.value = "";
+      document.querySelector(".picture-repo").src =
+        "./assets/icons/picture-svgrepo-com.png";
+    } catch (error) {
+      console.error("Erreur lors de l'envoi du projet :", error);
+      alert("Une erreur est survenue : " + error.message);
+    }
+  });
