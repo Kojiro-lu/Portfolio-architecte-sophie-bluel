@@ -143,22 +143,24 @@
         <h3 class="title-modal">Ajout Photo</h3>
         <div class="up-project">
           <div class="add-project-photo">
-            <label for="file" class="file-photo">
-              <img
-                src="./assets/icons/picture-svgrepo-com.png"
-                alt="image repo"
-                class="picture-repo"
+            <div class="miniphoto">
+              <label for="file" class="file-photo">
+                <img
+                  src="./assets/icons/picture-svgrepo-com.png"
+                  alt="image repo"
+                  class="picture-repo"
+                />
+                <p class="up-photo">+ Ajouter photo</p>
+              </label>
+              <input
+                type="file"
+                id="file"
+                name="image"
+                accept="image/png, image/jpg"
+                required
               />
-              <p class="up-photo">+ Ajouter photo</p>
-            </label>
-            <input
-              type="file"
-              id="file"
-              name="image"
-              accept="image/png, image/jpg"
-              required
-            />
-            <p class="types-images">jpg, png : 4mo max</p>
+              <p class="types-images">jpg, png : 4mo max</p>
+            </div>
           </div>
           <div class="add-project-title">
             <div class="title">Titre</div>

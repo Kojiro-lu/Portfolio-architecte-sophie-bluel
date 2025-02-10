@@ -216,6 +216,8 @@ dropdownCategoryListe();
 // Chargement de l'image
 const fileInput = document.getElementById("file");
 const pictureRepo = document.querySelector(".picture-repo");
+const upPhotoText = document.querySelector(".up-photo"); // Texte "+ Ajouter photo"
+const typesImages = document.querySelector(".types-images"); // Texte "jpg, png : 4mo max"
 
 // Écouter l'événement 'change' sur l'input type="file"
 fileInput.addEventListener("change", function (event) {
@@ -224,8 +226,15 @@ fileInput.addEventListener("change", function (event) {
     // Créer un objet URL pour afficher l'image
     const imageUrl = URL.createObjectURL(file);
 
-    // Changer la source de l'image pour la photo sélectionnée
+    // Remplacer l'image dans .picture-repo
     pictureRepo.src = imageUrl;
+
+    // Ajouter une nouvelle classe à l'image pour la styliser différemment
+    pictureRepo.classList.add("uploaded-image"); // Exemple de classe ajoutée
+
+    // Cacher les éléments "+ Ajouter photo" et "jpg, png : 4mo max"
+    if (upPhotoText) upPhotoText.style.display = "none"; // Cacher le texte "+ Ajouter photo"
+    if (typesImages) typesImages.style.display = "none"; // Cacher le texte "jpg, png : 4mo max"
   }
 });
 
@@ -236,6 +245,10 @@ document
     const fileInput = document.querySelector("#file");
     const titleInput = document.querySelector("#input-title");
     const categorySelect = document.querySelector(".select-category");
+    const pictureRepo = document.querySelector(".picture-repo");
+    const uploadedImage = document.querySelector(".uploaded-image");
+    const upPhoto = document.querySelector(".up-photo");
+    const typesImages = document.querySelector(".types-images");
 
     // Vérification si tous les champs sont remplis
     if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
@@ -289,8 +302,18 @@ document
       fileInput.value = "";
       titleInput.value = "";
       categorySelect.value = "";
-      document.querySelector(".picture-repo").src =
-        "./assets/icons/picture-svgrepo-com.png";
+      pictureRepo.src = "./assets/icons/picture-svgrepo-com.png"; // Réinitialiser l'image
+      // Si une image est affichée, enlever la classe 'uploaded-image' et remettre 'picture-repo'
+      if (uploadedImage) {
+        uploadedImage.classList.remove("uploaded-image");
+        pictureRepo.classList.add("picture-repo"); // Remettre la classe par défaut
+      }
+
+      // Réafficher les éléments "up-photo" et "types-images"
+      if (upPhoto && typesImages) {
+        upPhoto.style.display = "flex"; // Afficher le texte + Ajouter photo
+        typesImages.style.display = "block"; // Afficher "jpg, png : 4mo max"
+      }
     } catch (error) {
       console.error("Erreur lors de l'envoi du projet :", error);
       alert("Une erreur est survenue : " + error.message);
