@@ -8,7 +8,7 @@ export const urlApiProjects = "http://localhost:5678/api/works";
 //////////////////////////////////////////////////////////
 
 // Fonction pour récupérer les projets
-export async function recoveryProjects() {
+export async function getProjects() {
   try {
     const answerProjects = await fetch(urlApiProjects); // Appel des projets avec la variable précédemment créée
     console.log("appel url :", urlApiProjects);
@@ -29,7 +29,7 @@ export async function recoveryProjects() {
   }
 }
 
-recoveryProjects(); // Appel à exécuter la fonction
+getProjects(); // Appel à exécuter la fonction
 
 //Création des fonctions pour les cards, images, titles.
 function createProjectCard() {
@@ -66,14 +66,14 @@ function displayProjects(projects) {
 }
 // Appel de la fonction seulement après récupération des projets avec async pour être sur que le projet soit chargé avant secondes étapes
 async function startDisplayProjects() {
-  const projects = await recoveryProjects(); // récup des projets
+  const projects = await getProjects(); // récup des projets
   displayProjects(projects); // Passer les projets récup à la fonction d'affichage
 }
 startDisplayProjects();
 
 // Mise à jour de l'affichage lors de l'ajout d'un nouveau projet
 export async function refreshGallery() {
-  const projects = await recoveryProjects();
+  const projects = await getProjects();
   displayProjects(projects);
 }
 
@@ -87,7 +87,7 @@ export async function refreshGallery() {
 const urlApiCategories = "http://localhost:5678/api/categories";
 
 // Fonction pour récupérer les catégories
-export async function recoveryCategories() {
+export async function getCategories() {
   try {
     const answerCategories = await fetch(urlApiCategories); // Appel des catégories avec la variable précèdement créée
     console.log("appel categories :", urlApiCategories);
@@ -108,7 +108,7 @@ export async function recoveryCategories() {
   }
 }
 
-recoveryCategories(); // Appel pour exécuter la fonction
+getCategories(); // Appel pour exécuter la fonction
 
 // Fonction pour créer un bouton de catégorie
 function createCategoryButton(categoryName) {
@@ -172,8 +172,8 @@ function menuFilterCategories(categories, projects) {
 
 //Appel à la fonction quand tout est chargé correctement avec async
 async function startDisplayMenuProjects() {
-  const categories = await recoveryCategories(); // récup des catégories
-  const projects = await recoveryProjects(); // récupèration également des projets
+  const categories = await getCategories(); // récup des catégories
+  const projects = await getProjects(); // récupèration également des projets
   menuFilterCategories(categories, projects); // Passer les categories et les projets récup à la fonction d'affichage
 }
 startDisplayMenuProjects();

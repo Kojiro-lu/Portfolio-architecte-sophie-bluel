@@ -1,8 +1,8 @@
 // Import des variables et fonctions depuis script.js
 import {
   urlApiProjects,
-  recoveryProjects,
-  recoveryCategories,
+  getProjects,
+  getCategories,
   refreshGallery,
 } from "../script.js";
 
@@ -63,7 +63,7 @@ function createProjectCardModal(project) {
 
 // Fonction pour afficher les projets dans la modal
 async function startDisplayProjectsModal() {
-  const projects = await recoveryProjects();
+  const projects = await getProjects();
   if (projects) {
     displayProjectsModal(projects);
   }
@@ -194,7 +194,7 @@ async function dropdownCategoryListe() {
   const selectElement = document.querySelector(".select-category"); // Sélectionne de l'élèment
   if (!selectElement) return; // on vérifie si l'élèment existe bien
 
-  const categories = await recoveryCategories(); // Récupère les catégories depuis l'API
+  const categories = await getCategories(); // Récupère les catégories depuis l'API
   if (!categories) return; // Si erreur, stoppe l'exécution
 
   categories.forEach((category) => {
