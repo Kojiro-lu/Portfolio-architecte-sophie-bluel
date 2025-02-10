@@ -135,77 +135,54 @@ function deleteProject(projectId) {
     });
 }
 
-////////////////////////////////////////////////////////////
-//                                                       //
-// Ouverture de la modal 2 depuis "ajouter les photos"  //
-//                                                     //
-////////////////////////////////////////////////////////
+/////////////////////////////////////////////
+//                                        //
+// Gestion de la modal 2 + félche retour  //
+//                                        //
+////////////////////////////////////////////
 
-function openSecondModal() {
+function handleSecondModal() {
   const addPhotoButton = document.querySelector(".add-photo");
+  const modal1 = document.getElementById("modal1");
   const modal2 = document.getElementById("modal2");
   const overlay = document.getElementById("overlay");
+  const closeButtons = modal2?.querySelectorAll(".modal-close");
+  const backButton = modal2?.querySelector(".modal-arrow-left");
 
-  if (addPhotoButton && modal2 && overlay) {
+  if (addPhotoButton && modal1 && modal2 && overlay) {
+    // Ouverture de la modal 2
     addPhotoButton.addEventListener("click", () => {
       modal2.style.display = "block";
       overlay.style.display = "block";
-      // Fermer la première modal et overlay si nécessaire
-      const modal1 = document.getElementById("modal1");
-      if (modal1) {
-        modal1.style.display = "none";
-      }
+      modal2.setAttribute("aria-hidden", "false");
+      modal1.style.display = "none";
+      modal1.setAttribute("aria-hidden", "true");
+    });
+
+    // Fermeture de la modal 2
+    const closeModal = () => {
+      modal2.style.display = "none";
+      overlay.style.display = "none";
+      modal2.setAttribute("aria-hidden", "true");
+    };
+
+    closeButtons?.forEach((button) =>
+      button.addEventListener("click", closeModal)
+    );
+    overlay?.addEventListener("click", closeModal);
+
+    // Retour à la modal 1 via la flèche
+    backButton?.addEventListener("click", () => {
+      modal2.style.display = "none";
+      modal1.style.display = "block";
+      modal2.setAttribute("aria-hidden", "true");
+      modal1.setAttribute("aria-hidden", "false");
     });
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  openSecondModal();
-});
-
-//////////////////////////////////////////////
-//                                         //
-// Fermeture de la modal 2 + overlay      //
-//                                       //
-//////////////////////////////////////////
-
-function closeSecondModal() {
-  const modal2 = document.getElementById("modal2");
-  const overlay = document.getElementById("overlay");
-  const closeButtons = modal2.querySelectorAll(".modal-close");
-
-  function closeModal() {
-    modal2.style.display = "none";
-    overlay.style.display = "none";
-  }
-
-  closeButtons.forEach((button) =>
-    button.addEventListener("click", closeModal)
-  );
-  overlay.addEventListener("click", closeModal);
-}
-
-document.addEventListener("DOMContentLoaded", closeSecondModal);
-
-/////////////////////////////////////////////
-//                                        //
-// Retour à la modal 1 avec la félche    //
-//                                      //
-/////////////////////////////////////////
-function returnToFirstModal() {
-  const modal2 = document.getElementById("modal2");
-  const modal1 = document.getElementById("modal1");
-  const backButton = modal2.querySelector(".modal-arrow-left");
-
-  function goBack() {
-    modal2.style.display = "none";
-    modal1.style.display = "block";
-  }
-
-  backButton.addEventListener("click", goBack);
-}
-
-document.addEventListener("DOMContentLoaded", returnToFirstModal);
+// Exécuter après le chargement du DOM
+document.addEventListener("DOMContentLoaded", handleSecondModal);
 
 ///////////////////////////////////////////////////////////////////////
 //                                                                  //
