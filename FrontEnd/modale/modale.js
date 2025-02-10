@@ -22,12 +22,14 @@ function toggleModal() {
     modifyButton.addEventListener("click", () => {
       overlay.style.display = "block";
       modal.style.display = "block";
+      modal.setAttribute("aria-hidden", "false");
     });
 
     [overlay, closeButton].forEach((element) => {
       element.addEventListener("click", () => {
         overlay.style.display = "none";
         modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
       });
     });
   }
