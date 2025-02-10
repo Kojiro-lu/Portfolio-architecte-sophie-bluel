@@ -275,27 +275,3 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Vérification de la connexion ok ou non."); // Vérification du statut de connexion
   checkLoginStatusForDeletedFilter();
 });
-
-////////////////////////////////////////////
-//                                       //
-// Ouverture de l'overlay et la modal 1 //
-//                                     //
-////////////////////////////////////////
-
-function openModal() {
-  const modifyButton = document.querySelector(".modifier-projet");
-  const overlay = document.getElementById("overlay");
-  const modal1 = document.getElementById("modal1");
-
-  if (modifyButton && overlay && modal1) {
-    modifyButton.addEventListener("click", () => {
-      overlay.style.display = "block";
-      modal1.style.display = "block";
-    });
-  }
-}
-
-// Exécuter au chargement complet du DOM
-document.addEventListener("DOMContentLoaded", () => {
-  openModal();
-});

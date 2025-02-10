@@ -6,33 +6,35 @@ import {
   refreshGallery,
 } from "../script.js";
 
-/////////////////////////////////////////////////////
-//                                                //
-// Fermeture au clique de la modal et overlay    //
-//                                              //
-/////////////////////////////////////////////////
+////////////////////////////////////////////
+//                                       //
+// Gestion de l'overlay et de la modal 1 //
+//                                       //
+////////////////////////////////////////////
 
-function closeModal() {
-  const overlay = document.getElementById("overlay"); // Sélection de l'overlay
-  const modal = document.getElementById("modal1"); // Sélection de la modal
-  const closeButton = document.querySelector(".modal-close"); // Sélection du bouton de fermeture
+function toggleModal() {
+  const modifyButton = document.querySelector(".modifier-projet");
+  const overlay = document.getElementById("overlay");
+  const modal = document.getElementById("modal1");
+  const closeButton = document.querySelector(".modal-close");
 
-  if (overlay && closeButton && modal) {
-    // Si l'overlay ou la croix est cliqué, on ferme la modal
+  if (modifyButton && overlay && modal && closeButton) {
+    modifyButton.addEventListener("click", () => {
+      overlay.style.display = "block";
+      modal.style.display = "block";
+    });
+
     [overlay, closeButton].forEach((element) => {
       element.addEventListener("click", () => {
-        overlay.style.display = "none"; // Cache l'overlay
-        modal.style.display = "none"; // Cache la modal
+        overlay.style.display = "none";
+        modal.style.display = "none";
       });
     });
   }
 }
 
-// Exécuter au chargement de la page
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Initialisation de la fermeture de la modal.");
-  closeModal();
-});
+// Exécuter au chargement du DOM
+document.addEventListener("DOMContentLoaded", toggleModal);
 
 ///////////////////////////////////////////////////////////////////////
 //                                                                  //
