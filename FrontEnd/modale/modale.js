@@ -56,7 +56,7 @@ function createProjectCardModal(project) {
   img.classList.add("img-card");
   card.appendChild(img);
 
-  addDeleteIconToProject(card); // Ajouter l'icône  de la poubelle à chaque carte projet
+  addDeleteIconToProject(card);
 
   return card;
 }
@@ -128,6 +128,8 @@ function deleteProject(projectId) {
         projectElement.remove();
       }
       alert("Projet supprimé avec succès");
+
+      refreshGallery();
     })
     .catch((error) => {
       console.error("Erreur:", error);
@@ -181,14 +183,13 @@ function handleSecondModal() {
   }
 }
 
-// Exécuter après le chargement du DOM
 document.addEventListener("DOMContentLoaded", handleSecondModal);
 
-///////////////////////////////////////////////////////////////////////
-//                                                                  //
-// Affichage des catégories dans l'ajout de projet de la modale 2  //
-//                                                                //
-///////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//                                                   //
+// Affichage des catégories dans l'ajout de projet   //
+//                                                   //
+///////////////////////////////////////////////////////
 
 async function dropdownCategoryListe() {
   const selectElement = document.querySelector(".select-category"); // Sélectionne de l'élèment
@@ -199,29 +200,29 @@ async function dropdownCategoryListe() {
 
   categories.forEach((category) => {
     const option = document.createElement("option");
-    option.value = category.id; // on utilise l'id
-    option.textContent = category.name; // Utilise le nom pour le visuel
+    option.value = category.id;
+    option.textContent = category.name;
     selectElement.appendChild(option);
   });
 }
 
 dropdownCategoryListe();
 
-////////////////////////////////////
-//                               //
-// Ajout d'un nouveau projet    //
-//                             //
+/////////////////////////////////
+//                            //
+// Ajout d'un nouveau projet  //
+//                            //
 ////////////////////////////////
 
 // Chargement de l'image
 const fileInput = document.getElementById("file");
 const pictureRepo = document.querySelector(".picture-repo");
-const upPhotoText = document.querySelector(".up-photo"); // Texte "+ Ajouter photo"
-const typesImages = document.querySelector(".types-images"); // Texte "jpg, png : 4mo max"
+const upPhotoText = document.querySelector(".up-photo");
+const typesImages = document.querySelector(".types-images");
 
-// Écouter l'événement 'change' sur l'input type="file"
+// Écouter l'événement pour l'ajout de l'image "
 fileInput.addEventListener("change", function (event) {
-  const file = event.target.files[0]; // Récupérer le fichier sélectionné
+  const file = event.target.files[0];
   if (file) {
     // Créer un objet URL pour afficher l'image
     const imageUrl = URL.createObjectURL(file);
@@ -230,11 +231,11 @@ fileInput.addEventListener("change", function (event) {
     pictureRepo.src = imageUrl;
 
     // Ajouter une nouvelle classe à l'image pour la styliser différemment
-    pictureRepo.classList.add("uploaded-image"); // Exemple de classe ajoutée
+    pictureRepo.classList.add("uploaded-image");
 
-    // Cacher les éléments "+ Ajouter photo" et "jpg, png : 4mo max"
-    if (upPhotoText) upPhotoText.style.display = "none"; // Cacher le texte "+ Ajouter photo"
-    if (typesImages) typesImages.style.display = "none"; // Cacher le texte "jpg, png : 4mo max"
+    // Cacher les éléments texte
+    if (upPhotoText) upPhotoText.style.display = "none";
+    if (typesImages) typesImages.style.display = "none";
   }
 });
 
@@ -258,8 +259,8 @@ document
 
     const formData = new FormData();
     formData.append("title", titleInput.value);
-    formData.append("image", fileInput.files[0]); // Vérifie si "image" est bien le bon champ
-    formData.append("category", categorySelect.value.toString()); // Conversion en string
+    formData.append("image", fileInput.files[0]);
+    formData.append("category", categorySelect.value.toString());
 
     console.log("Données envoyées :", {
       title: titleInput.value,
@@ -273,11 +274,11 @@ document
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
-        body: formData, // Envoi en multipart/form-data
+        body: formData,
       });
 
       if (!response.ok) {
-        const errorText = await response.text(); // Récupérer le message exact de l'API
+        const errorText = await response.text(); // Récupérer le message exact de l'API si erreur
         throw new Error(`Erreur API: ${response.status} - ${errorText}`);
       }
 
@@ -289,12 +290,10 @@ document
       successMessage.textContent = "Projet ajouté avec succès !";
       successMessage.style.display = "block";
 
-      // Cacher le message après 3 secondes
       setTimeout(() => {
         successMessage.style.display = "none";
       }, 3000);
 
-      // Rafraîchir la galerie de l'index et de la modale 1 sans recharger la page
       refreshGallery();
       startDisplayProjectsModal();
 
@@ -302,7 +301,8 @@ document
       fileInput.value = "";
       titleInput.value = "";
       categorySelect.value = "";
-      pictureRepo.src = "./assets/icons/picture-svgrepo-com.png"; // Réinitialiser l'image
+      pictureRepo.src = "./assets/icons/picture-svgrepo-com.png";
+
       // Si une image est affichée, enlever la classe 'uploaded-image' et remettre 'picture-repo'
       if (uploadedImage) {
         uploadedImage.classList.remove("uploaded-image");
