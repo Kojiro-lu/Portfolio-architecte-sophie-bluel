@@ -55,6 +55,13 @@ input[type="password"],
   font-weight: 600;
 }
 
+#message-erreur-connexion {
+  color: red;
+  width: 385px;
+  flex-direction: column;
+  display: flex;
+}
+
 .forget-password {
   text-align: center;
   color: black;
