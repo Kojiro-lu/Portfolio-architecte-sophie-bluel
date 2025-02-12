@@ -278,6 +278,11 @@
   padding-top: 10px;
 }
 
+.validate-add-project:disabled {
+  background-color: gray;
+  opacity: 0.6;
+}
+
 .validate-add-project {
   display: flex;
   justify-content: center;

@@ -218,7 +218,7 @@ const pictureRepo = document.querySelector(".picture-repo");
 const upPhotoText = document.querySelector(".up-photo");
 const typesImages = document.querySelector(".types-images");
 
-// Écouter l'événement pour l'ajout de l'image "
+// Écouter l'événement pour l'ajout de l'image
 fileInput.addEventListener("change", function (event) {
   const file = event.target.files[0];
   if (file) {
@@ -238,6 +238,28 @@ fileInput.addEventListener("change", function (event) {
   }
 });
 
+// Désactivation du bouton tant que le formulaire est incomplet
+const validateButton = document.querySelector(".validate-add-project");
+const titleInput = document.querySelector("#input-title");
+const categorySelect = document.querySelector(".select-category");
+
+function checkFormValidity() {
+  if (
+    fileInput.files.length > 0 &&
+    titleInput.value.trim() !== "" &&
+    categorySelect.value !== ""
+  ) {
+    validateButton.removeAttribute("disabled");
+  } else {
+    validateButton.setAttribute("disabled", "true");
+  }
+}
+
+// Ajouter les écouteurs d'événements pour activer/désactiver le bouton
+fileInput.addEventListener("change", checkFormValidity);
+titleInput.addEventListener("input", checkFormValidity);
+categorySelect.addEventListener("change", checkFormValidity);
+
 // Ajout du projet à l'api
 document
   .querySelector(".validate-add-project")
@@ -250,9 +272,8 @@ document
     const upPhoto = document.querySelector(".up-photo");
     const typesImages = document.querySelector(".types-images");
 
-    // Vérification si tous les champs sont remplis
+    // Vérification si tous les champs sont remplis (évite les erreurs en cas de contournement)
     if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
-      alert("Veuillez remplir tous les champs !");
       return;
     }
 
@@ -277,7 +298,7 @@ document
       });
 
       if (!response.ok) {
-        const errorText = await response.text(); // Récupérer le message exact de l'API si erreur
+        const errorText = await response.text();
         throw new Error(`Erreur API: ${response.status} - ${errorText}`);
       }
 
@@ -301,6 +322,9 @@ document
       titleInput.value = "";
       categorySelect.value = "";
       pictureRepo.src = "./assets/icons/picture-svgrepo-com.png";
+
+      // Désactiver le bouton après ajout
+      validateButton.setAttribute("disabled", "true");
 
       // Si une image est affichée, enlever la classe 'uploaded-image' et remettre 'picture-repo'
       if (uploadedImage) {
