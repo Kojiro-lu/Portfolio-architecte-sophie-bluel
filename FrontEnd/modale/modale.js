@@ -34,8 +34,6 @@ function toggleModal() {
     });
   }
 }
-
-// Exécuter au chargement du DOM
 document.addEventListener("DOMContentLoaded", toggleModal);
 
 ///////////////////////////////////////////////////////////////////////
@@ -106,7 +104,7 @@ function deleteProject(projectId) {
   const authToken = localStorage.getItem("authToken");
 
   //requête DELETE à l'api
-  fetch(`http://localhost:5678/api/works/${projectId}`, {
+  fetch(`${urlApiProjects}/${projectId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -226,6 +224,7 @@ fileInput.addEventListener("change", function (event) {
   if (file) {
     // Créer un objet URL pour afficher l'image
     const imageUrl = URL.createObjectURL(file);
+    console.log(imageUrl);
 
     // Remplacer l'image dans .picture-repo
     pictureRepo.src = imageUrl;
@@ -269,7 +268,7 @@ document
     });
 
     try {
-      const response = await fetch("http://localhost:5678/api/works", {
+      const response = await fetch(urlApiProjects, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,

@@ -1,119 +1,114 @@
-//Adresse de l'API pour les projets mis en export pour réutilisation dans moadle.js
+// Adresse de l'API pour les projets mis en export pour réutilisation dans moadle.js
 export const urlApiProjects = "http://localhost:5678/api/works";
 
 //////////////////////////////////////////////////////////////
 //                                                         //
-//Récupération et affichage des projets sur la page index //
-//                                                       //
-//////////////////////////////////////////////////////////
+// Récupération et affichage des projets sur la page index //
+//                                                         //
+////////////////////////////////////////////////////////////
 
 // Fonction pour récupérer les projets
 export async function getProjects() {
   try {
     const answerProjects = await fetch(urlApiProjects); // Appel des projets avec la variable précédemment créée
-    console.log("appel url :", urlApiProjects);
 
     if (!answerProjects.ok) {
       throw new Error(`Erreur HTTP : ${answerProjects.status}`); // Vérification si la réponse est ok ou non
     }
 
-    const projects = await answerProjects.json(); // Transformation de la réponse en JSON
-    console.log("Projets récupérés :", projects); // Affiche les projets pour voir si ok
-    return projects; // Renvoie de la variable pour une nouvelle utilisation
+    return await answerProjects.json(); // Transformation de la réponse en JSON et retour des projets
   } catch (error) {
-    //on capture gràce au catch si un erreur ce produit
     console.error(
       "Erreur lors de la récupération des projets :",
       error.message
-    ); //affichage des erreurs s'il y en a dans la console
+    );
   }
 }
 
 getProjects(); // Appel à exécuter la fonction
 
-//Création des fonctions pour les cards, images, titles.
+// Création des fonctions pour les cards, images, titles.
 function createProjectCard() {
   return document.createElement("figure");
 }
 
 function createProjectImage(imageUrl, title, card) {
   const img = document.createElement("img");
-  img.src = imageUrl; //url de l'image
-  img.alt = title; //titre du projet qui sert au titre de l'image
+  img.src = imageUrl; // URL de l'image
+  img.alt = title; // Titre du projet qui sert au titre de l'image
   card.appendChild(img);
 }
 
 function createProjectTitle(title, card) {
   const figcaption = document.createElement("figcaption");
-  figcaption.textContent = title; //titre du projet
+  figcaption.textContent = title; // Titre du projet
   card.appendChild(figcaption);
 }
 
 // Affichage des projets dans notre galerie
 function displayProjects(projects) {
-  const gallery = document.querySelector(".gallery"); //on recupère la gallery dans le DOM
-  gallery.innerHTML = ""; //remettre à 0 les elements présent au cas ou.
+  const gallery = document.querySelector(".gallery"); // On récupère la galerie dans le DOM
+  gallery.innerHTML = ""; // Remettre à 0 les éléments présents au cas où
 
-  //on lance une boucle forEach pour parcourir le tableau projects
+  // On lance une boucle forEach pour parcourir le tableau projects
   projects.forEach((project) => {
     const card = createProjectCard();
     createProjectImage(project.imageUrl, project.title, card);
     createProjectTitle(project.title, card);
 
-    // on raccroche chàque enfants à leurs parents pour l'affichage au bon endroit
+    // On raccroche chaque enfant à son parent pour l'affichage au bon endroit
     gallery.appendChild(card);
   });
 }
-// Appel de la fonction seulement après récupération des projets avec async pour être sur que le projet soit chargé avant secondes étapes
+
+// Appel de la fonction seulement après récupération des projets avec async
 async function startDisplayProjects() {
-  const projects = await getProjects(); // récup des projets
-  displayProjects(projects); // Passer les projets récup à la fonction d'affichage
+  const projects = await getProjects(); // Récupération des projets
+  if (projects) displayProjects(projects); // Vérification et affichage des projets
 }
+
 startDisplayProjects();
 
 // Mise à jour de l'affichage lors de l'ajout d'un nouveau projet
 export async function refreshGallery() {
   const projects = await getProjects();
-  displayProjects(projects);
+  if (projects) displayProjects(projects);
 }
 
 //////////////////////////////////////////////////////////
 //                                                     //
-// Fonction génèration des filtres du menu catégorie  //
-//                                                   //
-//////////////////////////////////////////////////////
+// Fonction génération des filtres du menu catégorie  //
+//                                                     //
+//////////////////////////////////////////////////////////
 
-// Adresse de l'API pour les projets
+// Adresse de l'API pour les catégories
 const urlApiCategories = "http://localhost:5678/api/categories";
 
 // Fonction pour récupérer les catégories
 export async function getCategories() {
   try {
-    const answerCategories = await fetch(urlApiCategories); // Appel des catégories avec la variable précèdement créée
-    console.log("appel categories :", urlApiCategories);
+    const answerCategories = await fetch(urlApiCategories);
 
     if (!answerCategories.ok) {
-      throw new Error(`Erreur HTTP : ${answerCategories.status}`); // Vérifie si la réponse est OK
+      throw new Error(`Erreur HTTP : ${answerCategories.status}`);
     }
 
-    const categories = await answerCategories.json(); // Transformation de la réponse en JSON
-    console.log("Catégories récupérées :", categories); // Affiche les catégories pour voir si tout est OK
-    return categories; // Renvoie de la variable pour une nouvelle utilisation
+    return await answerCategories.json(); // Retourne les catégories
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des catégories :",
       error.message
-    ); // Gère et affiche les erreurs
-    return null; // Retourne null en cas d'erreur
+    );
+    return null;
   }
 }
 
-getCategories(); // Appel pour exécuter la fonction
+getCategories();
 
 // Fonction pour créer un bouton de catégorie
 function createCategoryButton(categoryName) {
   const buttonCategories = document.createElement("button");
-  buttonCategories.textContent = categoryName; // pour le nom de chaque catégorie
+  buttonCategories.textContent = categoryName;
   return buttonCategories;
 }
 
@@ -122,156 +117,139 @@ function addFilterEvent(buttonCategories, categoryId, projects) {
   buttonCategories.addEventListener("click", () => {
     const menuButtons = document.querySelectorAll(
       ".menu-filter-categories button"
-    ); //on sélèctionne le selecteur button de notre classe manu-filter-catégories
-    menuButtons.forEach((button) => {
-      button.classList.remove("active");
-    }); //Enlever la classe active de tous les boutons
+    );
+    menuButtons.forEach((button) => button.classList.remove("active"));
 
-    buttonCategories.classList.add("active"); //Ajouter la classe active au bouton qui a été cliquer
+    buttonCategories.classList.add("active");
 
     const projectsFiltres = projects.filter(
       (project) => project.categoryId === categoryId
     );
     displayProjects(projectsFiltres);
-  }); //Filtre des catégories
+  });
 }
 
 // Fonction pour la création du menu des filtres catégories
 function menuFilterCategories(categories, projects) {
-  const menu = document.querySelector(".menu-filter-categories"); // récupération du menu dans le DOM
-  menu.innerHTML = ""; // on remet à 0 le menu au cas où
+  const menu = document.querySelector(".menu-filter-categories");
+  menu.innerHTML = ""; // Réinitialisation du menu
 
-  // Création du bouton pour tous les projets
-  const buttonAllProjects = document.createElement("button"); // Création du bouton
-  buttonAllProjects.textContent = "Tous"; // texte du bouton
+  // Création du bouton pour afficher tous les projets
+  const buttonAllProjects = document.createElement("button");
+  buttonAllProjects.textContent = "Tous";
 
-  menu.appendChild(buttonAllProjects); // on ajoute le bouton au menu
+  menu.appendChild(buttonAllProjects);
 
-  // activation au clic du filtre, pour afficher tous les projets
   buttonAllProjects.addEventListener("click", () => {
     const menuButtons = document.querySelectorAll(
       ".menu-filter-categories button"
-    ); //on sélèctionne le selecteur button de notre classe manu-filter-catégories
-    menuButtons.forEach((button) => {
-      button.classList.remove("active");
-    }); //Enlever la classe active de tous les boutons
+    );
+    menuButtons.forEach((button) => button.classList.remove("active"));
 
-    buttonAllProjects.classList.add("active"); //Ajouter la classe active au bouton qui a été cliquer
+    buttonAllProjects.classList.add("active");
     displayProjects(projects);
   });
 
-  // Création des autres boutons avec forEach
+  // Création des boutons pour chaque catégorie
   categories.forEach((category) => {
-    console.log("categorie ok :", category);
-
-    const buttonCategories = createCategoryButton(category.name); // création des boutons
-    menu.appendChild(buttonCategories); // Ajouter le bouton au menu
-    addFilterEvent(buttonCategories, category.id, projects); // ajout de l'événement au bouton
+    const buttonCategories = createCategoryButton(category.name);
+    menu.appendChild(buttonCategories);
+    addFilterEvent(buttonCategories, category.id, projects);
   });
 }
 
-//Appel à la fonction quand tout est chargé correctement avec async
+// Appel à la fonction quand tout est chargé correctement avec async
 async function startDisplayMenuProjects() {
-  const categories = await getCategories(); // récup des catégories
-  const projects = await getProjects(); // récupèration également des projets
-  menuFilterCategories(categories, projects); // Passer les categories et les projets récup à la fonction d'affichage
+  const categories = await getCategories();
+  const projects = await getProjects();
+
+  if (categories && projects) {
+    menuFilterCategories(categories, projects);
+  }
 }
+
 startDisplayMenuProjects();
 
 ////////////////////////////////////////////////////////////////////////
 //                                                                   //
-//Mise en place de la déconnexion une fois que nous sommes connecté //
-//                                                                 //
-////////////////////////////////////////////////////////////////////
+// Mise en place de la déconnexion une fois que nous sommes connecté //
+//                                                                   //
+////////////////////////////////////////////////////////////////////////
 
-// On met à jour le bouton login/logout
+// Mise à jour du bouton login/logout
 function checkLoginStatus() {
-  const token = localStorage.getItem("authToken"); // Récupérer le token dans localStorage
-  const loginLink = document.querySelector("nav ul li:nth-child(3) a"); // Cibler le lien "login" gràce à nth-child(3) qui correspond au troisiéme fils de li
-
-  console.log("Token présent ou non:", token); // Affiche le token ou null si non fonctionnel
+  const token = localStorage.getItem("authToken");
+  const loginLink = document.querySelector("nav ul li:nth-child(3) a"); // Cibler le lien "login"
 
   if (token) {
-    // Si l'utilisateur est bien connecté
-    loginLink.textContent = "Logout"; // Changer le texte en "Logout" pour pouvoir ce déconnecté
-    loginLink.href = "#"; // Désactiver le lien de redirection au cas ou
+    loginLink.textContent = "Logout"; // Changer le texte en "Logout"
+    loginLink.href = "#"; // Désactiver le lien de redirection
     loginLink.addEventListener("click", handleLogout); // Ajouter l'événement de déconnexion
   } else {
-    // Si l'utilisateur n'est pas connecté
-    loginLink.textContent = "Login"; // laisser le login pour pouvoir ce connecté
-    loginLink.href = "./login/login.html"; // rediriger vers la page de connexion
+    loginLink.textContent = "Login"; // Laisser le login pour se connecter
+    loginLink.href = "./login/login.html"; // Rediriger vers la page de connexion
   }
 }
 
-// fonction pour la déconnexion
+// Fonction pour la déconnexion
 function handleLogout(event) {
   event.preventDefault(); // Empêcher le comportement par défaut du lien
-  localStorage.removeItem("authToken"); // Supprimer le token du localStorage pour pas de reco-automatique si on revient sur la page.
-  window.location.reload(); // charger de nouveau notre page pour revenir à non connecté
+  localStorage.removeItem("authToken"); // Supprimer le token
+  window.location.reload(); // Recharger la page
 }
 
-// Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
+// Exécuter au chargement de la page pour vérifier la connexion
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Vérification de la connexion ok ou non.");
-  checkLoginStatus(); // Vérification du statut de la connexion
+  checkLoginStatus();
 });
 
 /////////////////////////////////////////////////////////
-//                                                    //
-// Affichage du bandeau lorsque nous sommes connecté //
-//                                                  //
-/////////////////////////////////////////////////////
+//                                                     //
+// Affichage du bandeau lorsque nous sommes connectés  //
+//                                                     //
+////////////////////////////////////////////////////////
 
-// on vérifie si l'utilisateur est connecté pour mettre à jour le bandeau
+// Vérification de la connexion pour afficher le bandeau
 function checkLoginStatusForDisplayBanner() {
   const token = localStorage.getItem("authToken"); // Vérifier le token dans localStorage
   const bandeau = document.querySelector(".bandeau-noir"); // Cibler le bandeau noir dans le DOM
-  const bodyConnected = document.body; // Sélèction du body pour l'ajout d'un margin top dynamiquement
+  const bodyConnected = document.body; // Sélection du body pour l'ajout d'un margin-top dynamique
 
   if (token && bandeau) {
-    // Si l'utilisateur est bien connecté et que le bandeau noir est bien présent
-    bandeau.style.display = "flex"; // on afficher le bandeau noir
-    bodyConnected.style.marginTop = "69px"; // Ajouter un margin-top pour décaler le contenu
-    console.log("L'utilisateur est connecté : bandeau affiché.");
+    bandeau.style.display = "flex";
+    bodyConnected.style.marginTop = "69px";
   } else {
-    bandeau.style.display = "none"; // Masquer le bandeau noir si utilisateur non connecter
-    bodyConnected.style.marginTop = "0"; // Remettre la marge à zéro
-    console.log("L'utilisateur n'est pas connecté : bandeau masqué.");
+    bandeau.style.display = "none";
+    bodyConnected.style.marginTop = "0";
   }
 }
 
-// Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Vérification de la connexion ok ou non.");
-  checkLoginStatusForDisplayBanner(); // Vérification du statut de connexion
+  checkLoginStatusForDisplayBanner();
 });
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                    //
-// Suppression des filtres et ajouter du boutton modifier pour ouverture de la Modale //
-//                                                                                  //
-/////////////////////////////////////////////////////////////////////////////////////
+// Suppression des filtres et ajout du bouton modifier pour ouverture de la Modale   //
+//                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////
 
 function checkLoginStatusForDeletedFilter() {
-  const token = localStorage.getItem("authToken"); // Vérifier que le token dans localStorage bien présent.
-  const menuFilter = document.querySelector(".menu-filter-categories"); // on sélèctionne la bonne classe qui concerne les filtres pour pouvoir l'utilisé
-  const buttonModifyProjets = document.querySelector(".modifier-projet"); // on sélèctionne la classe et on stock dans la variable pour l'utilisé
-  const myProjects = document.querySelector(".mes-projets");
+  const token = localStorage.getItem("authToken"); // Vérifier que le token est bien présent dans localStorage
+  const menuFilter = document.querySelector(".menu-filter-categories"); // Sélectionner la classe des filtres
+  const buttonModifyProjets = document.querySelector(".modifier-projet"); // Sélectionner la classe du bouton modifier
+  const myProjects = document.querySelector(".mes-projets"); // Sélectionner la section des projets
+
   if (token) {
-    //si le tocken existe
-    menuFilter.style.display = "none"; // on cache les filtres
-    buttonModifyProjets.style.display = "flex"; // on affiche le menu modifier
+    menuFilter.style.display = "none"; // Cacher les filtres
+    buttonModifyProjets.style.display = "flex"; // Afficher le bouton modifier
     myProjects.style.flexDirection = "row";
   } else {
-    //sinon
-    menuFilter.style.display = "flex"; // les filres sont affichés
-    buttonModifyProjets.style.display = "none"; // le menu modifier reste cacher
+    menuFilter.style.display = "flex"; // Afficher les filtres
+    buttonModifyProjets.style.display = "none"; // Cacher le bouton modifier
     myProjects.style.flexDirection = "column";
   }
 }
 
-// Exécuter au chargement de la page pour voir si nous sommes connecté ou non.
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Vérification de la connexion ok ou non."); // Vérification du statut de connexion
   checkLoginStatusForDeletedFilter();
 });
