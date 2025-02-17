@@ -210,7 +210,7 @@ dropdownCategoryListe();
 //                            //
 // Ajout d'un nouveau projet  //
 //                            //
-////////////////////////////////
+/////////////////////////////////
 
 // Chargement de l'image
 const fileInput = document.getElementById("file");
@@ -224,7 +224,6 @@ fileInput.addEventListener("change", function (event) {
   if (file) {
     // Créer un objet URL pour afficher l'image
     const imageUrl = URL.createObjectURL(file);
-    console.log(imageUrl);
 
     // Remplacer l'image dans .picture-repo
     pictureRepo.src = imageUrl;
@@ -272,7 +271,7 @@ document
     const upPhoto = document.querySelector(".up-photo");
     const typesImages = document.querySelector(".types-images");
 
-    // Vérification si tous les champs sont remplis (évite les erreurs en cas de contournement)
+    // Vérification si tous les champs sont remplis
     if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
       return;
     }
@@ -281,12 +280,6 @@ document
     formData.append("title", titleInput.value);
     formData.append("image", fileInput.files[0]);
     formData.append("category", categorySelect.value.toString());
-
-    console.log("Données envoyées :", {
-      title: titleInput.value,
-      image: fileInput.files[0],
-      category: categorySelect.value.toString(),
-    });
 
     try {
       const response = await fetch(urlApiProjects, {
@@ -303,7 +296,6 @@ document
       }
 
       const result = await response.json();
-      console.log("Projet ajouté avec succès :", result);
 
       // Affichage du message de confirmation
       const successMessage = document.querySelector(".success-message");
@@ -329,13 +321,13 @@ document
       // Si une image est affichée, enlever la classe 'uploaded-image' et remettre 'picture-repo'
       if (uploadedImage) {
         uploadedImage.classList.remove("uploaded-image");
-        pictureRepo.classList.add("picture-repo"); // Remettre la classe par défaut
+        pictureRepo.classList.add("picture-repo");
       }
 
       // Réafficher les éléments "up-photo" et "types-images"
       if (upPhoto && typesImages) {
-        upPhoto.style.display = "flex"; // Afficher le texte + Ajouter photo
-        typesImages.style.display = "block"; // Afficher "jpg, png : 4mo max"
+        upPhoto.style.display = "flex";
+        typesImages.style.display = "block";
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi du projet :", error);

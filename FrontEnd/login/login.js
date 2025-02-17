@@ -11,10 +11,8 @@ async function apiLoginRequest(email, password) {
       headers: { "Content-Type": "application/json" }, //requête en json
       body: JSON.stringify(loginData), //convertir loginData en json pour l'envoie de la requête
     });
-    console.log("Statut de la réponse : ", response.status); // Ajout d'un console log pour le statut de la réponse
 
     const responseBody = await response.json(); //stocké la réponse dans la constante
-    console.log("Réponse complète de l'API :", responseBody); // on affiche la répnose de l'api pour voir si ok ou pas
 
     if (!response.ok) {
       //vérification de la réponse et si erreur alors
@@ -25,11 +23,10 @@ async function apiLoginRequest(email, password) {
       );
     }
 
-    return responseBody; // si la réponse et ok, pas besoin de lancer le if
+    return responseBody;
   } catch (error) {
-    //mis en place du catch pour gérer les autres erreurs non gérer dans le if
     console.error("Erreur durant la connexion :", error.message);
-    throw error; // on informe notre code de la récupératoin de l'erreur
+    throw error;
   }
 }
 
@@ -42,7 +39,7 @@ function handleLoginResponse(data) {
 
 // Fonction pour afficher un message d'erreur si tentative de connexion ko
 function displayErrorMessage(message) {
-  const errorMessage = document.querySelector("#message-erreur-connexion"); //recerche de l'élèment dans le html pour l'affichage du message d'erreur
+  const errorMessage = document.querySelector("#message-erreur-connexion");
   errorMessage.textContent = message; //on affiche notre message d'erreur récupérer
 }
 
@@ -72,7 +69,6 @@ async function handleLogin(event) {
 
 // Ajouter l'événement au formulaire
 document.addEventListener("DOMContentLoaded", () => {
-  //chargement complet de la structure avant l'execution du code pour vérification
   const form = document.querySelector(".formulaire-login");
   //on vérifie d'abord que le formulaire existe bien
   if (!form) {
