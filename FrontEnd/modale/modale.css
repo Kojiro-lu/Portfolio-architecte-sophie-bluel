@@ -84,9 +84,16 @@
   position: absolute;
   top: 5px;
   right: 5px;
+  width: 17px;
+  height: 17px;
+  border-radius: 2px;
+  background-color: black;
+  padding: 5px; 
+}
+
+img.delete-icon {
   width: 9px;
   height: 11px;
-  background-color: black;
 }
 
 .block-modal hr {
