@@ -249,6 +249,7 @@ img.delete-icon {
 .input-title {
   width: auto;
   height: 51px;
+  border: hidden;
   box-shadow: 0px 4px 14px 0px #00000017;
 }
 
@@ -268,6 +269,7 @@ img.delete-icon {
   height: 51px;
   box-shadow: 0px 4px 14px 0px #00000017;
   background-color: #ffffff;
+  border: hidden;
 }
 
 .block-modal2 hr {
